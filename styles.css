@@ -35,7 +35,7 @@ body {
 }
 
 #app {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -45,7 +45,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -473,9 +473,19 @@ body {
 
   .panel {
     min-height: 680px;
-    max-height: 86vh;
+    max-height: 86dvh;
     border-radius: 28px;
     box-shadow: var(--shadow), 0 0 0 8px #FFFDF7, 0 0 0 9px var(--card-border);
-    overflow: hidden;
+    /* overflow-y (not hidden): this breakpoint isn't desktop-only in
+       practice -- a phone in landscape, or a larger phone, crosses this
+       width and hits max-height too. With overflow:hidden, any slide
+       whose content exceeds that height (the opening slide's photo, or a
+       question slide with many cards) got silently cut off with no way
+       to reach the rest. overflow-x stays hidden so the rounded corners
+       still clip cleanly; overflow-y falls back to scrolling instead of
+       clipping, on top of the per-slide internal scroll (.content /
+       .results-content) that already handles the common case. */
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
