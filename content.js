@@ -3,16 +3,16 @@
  * ----------
  * All locked copy and scoring data for the Quick Cross Cultural Self
  * Evaluation Checkup (Chinese-company version), per
- * "checkup-build-specification 2.md" (supersedes
- * "checkup-build-specification 1.md" and the earlier
- * chinese-checkup-build-context_1.md). Nothing in this file should be
- * reworded or restructured without checking that document first.
+ * "checkup-build-specification 3.md" (supersedes specs 1 and 2, and the
+ * earlier chinese-checkup-build-context_1.md). Nothing in this file
+ * should be reworded or restructured without checking that document first.
  *
- * Chinese strings: per spec 2's "Language" section, the full Chinese
- * translation is now real, reviewed, approved copy — not a placeholder —
- * and is used here verbatim. Four things are NOT translated, per spec:
- * Katarina Peters' name, the business name, and the numeric slide-position
- * indicator (all handled as language-independent values below), and the
+ * Chinese strings: the full Chinese translation is real, reviewed,
+ * approved copy — not a placeholder — and is used here verbatim,
+ * including the six section labels added in spec 3 (previously
+ * placeholders). Three things are NOT translated, per spec: Katarina
+ * Peters' name, the business name, and the numeric slide-position
+ * indicator (all handled as language-independent values below), plus the
  * email placeholder "you@company.com" (kept in Latin as a universal
  * example). A few narrow UI strings were never included in the provided
  * translation (client-side validation messages and the post-submit
@@ -113,10 +113,7 @@ const SECTIONS = [
   {
     key: "communication",
     max: 8,
-    // No Chinese section-label was supplied (the spec gives per-section
-    // *questions*, not a separate translated label for this small caption
-    // above the question) -- left as a placeholder rather than invented.
-    label: { en: "Communication", zh: "[ZH PLACEHOLDER — section label: Communication]" },
+    label: { en: "Communication", zh: "沟通" },
     question: {
       en: "When a problem appears, do you communicate it in time?",
       zh: "出现问题时，你们会及时沟通吗？",
@@ -155,7 +152,7 @@ const SECTIONS = [
   {
     key: "planning",
     max: 8,
-    label: { en: "Planning", zh: "[ZH PLACEHOLDER — section label: Planning]" },
+    label: { en: "Planning", zh: "规划" },
     question: {
       en: "Does the amount of upfront planning your German partner expects feel reasonable?",
       zh: "德方合作伙伴要求的前期规划程度，你们觉得合理吗？",
@@ -194,7 +191,7 @@ const SECTIONS = [
   {
     key: "representation",
     max: 8,
-    label: { en: "Representation", zh: "[ZH PLACEHOLDER — section label: Representation]" },
+    label: { en: "Representation", zh: "对接人" },
     question: {
       en: "Who is your middle person between the German side and your team?",
       zh: "谁负责代表你们团队与德方沟通？",
@@ -233,7 +230,7 @@ const SECTIONS = [
   {
     key: "trust",
     max: 6,
-    label: { en: "Trust and relationship", zh: "[ZH PLACEHOLDER — section label: Trust and relationship]" },
+    label: { en: "Trust and relationship", zh: "信任与关系" },
     question: {
       en: "Could this relationship overcome a misunderstanding?",
       zh: "这段关系是否经得起一次误解的考验？",
@@ -265,7 +262,7 @@ const SECTIONS = [
   {
     key: "decisions",
     max: 6,
-    label: { en: "Decisions, speed, and channels", zh: "[ZH PLACEHOLDER — section label: Decisions, speed, and channels]" },
+    label: { en: "Decisions, speed, and channels", zh: "决策、速度与沟通渠道" },
     question: {
       en: "When a decision from Germany takes longer than expected, do you know why, and who is your contact person?",
       zh: "当德方的决策比预期更慢时，你们知道原因吗？知道该找谁吗？",
@@ -297,7 +294,7 @@ const SECTIONS = [
   {
     key: "longevity",
     max: 8,
-    label: { en: "Longevity of adjustment", zh: "[ZH PLACEHOLDER — section label: Longevity of adjustment]" },
+    label: { en: "Longevity of adjustment", zh: "调整能否持续奏效" },
     question: {
       en: "Have the adjustments you've made in cooperation with German partners brought long term positive effects, or do the same misunderstandings keep coming back?",
       zh: "你们在与德方合作中做出的调整，带来了长期的积极效果，还是同样的误解一再重复出现？",

@@ -1,14 +1,15 @@
 # Quick Cross Cultural Self Evaluation Checkup — Chinese-company version
 
-Built from `checkup-build-specification 2.md`, which supersedes
-`checkup-build-specification 1.md` and the earlier
-`chinese-checkup-build-context_1.md`. Most notably vs. spec 1: the full
-Chinese translation is now real, reviewed, approved copy (not a
-placeholder); the opening page gained a name line under the photo and a
-shortened credit line; the results slide gained a small second photo next
-to the CTA, a merged CTA/spam-folder sentence, and darker/bolder statement
-boxes; and the progress dots gained a numeric position indicator (e.g.
-"3/6"). See "What's implemented" below for the full list.
+Built from `checkup-build-specification 3.md`, which supersedes specs 1
+and 2 and the earlier `chinese-checkup-build-context_1.md`. Most notably
+vs. spec 1: the full Chinese translation is now real, reviewed, approved
+copy (not a placeholder), including the six section labels added in spec
+3; the opening page gained a name line under the photo and a shortened
+credit line; the results slide gained a small second photo next to the
+CTA, a merged CTA/spam-folder sentence, and darker/bolder statement boxes;
+the progress dots gained a numeric position indicator (e.g. "3/6"); and
+spec 3 replaced the earlier "no analytics" architecture with Cloudflare
+Web Analytics. See "What's implemented" below for the full list.
 
 Plain HTML/CSS/JS, no build step, no dependencies. Open `index.html`
 directly in a browser, or serve the folder with any static file server (a
@@ -18,7 +19,8 @@ preview the app during development).
 
 ## Files
 
-- `index.html` — page shell, loads the scripts below in order.
+- `index.html` — page shell, loads the scripts below in order, plus the
+  Cloudflare Web Analytics beacon (see "What's implemented").
 - `styles.css` — all styling. Palette matches the spec's palette rules; the
   opening and results slides match the confirmed reference mockup
   (`opening-and-results-updated.html`) exactly, including the new
@@ -68,32 +70,43 @@ preview the app during development).
   paragraph as a quieter, smaller aside rather than a separate line; email
   field; required consent checkbox; and a smaller version of the credit
   line below the button (shown in both the pre- and post-submit states).
-- Full language toggle: every UI string, all six questions, and the
-  results-slide content switch between English and the real, approved
-  Chinese translation. Katarina's name, the business name, the numeric
-  slide-position indicator, and the email placeholder ("you@company.com")
-  are identical in both languages, per spec. A handful of narrow strings
-  were never included in the provided translation and remain clearly
-  marked placeholders rather than invented Chinese (see "Deliberately left
-  as placeholders" below) — search `content.js` for `ZH PLACEHOLDER`.
-- No analytics or tracking of any kind — the spec confirms this
-  explicitly, so nothing here adds any.
+- Full language toggle: every UI string, all six questions, the six
+  section labels, and the results-slide content switch between English and
+  the real, approved Chinese translation. Katarina's name, the business
+  name, the numeric slide-position indicator, and the email placeholder
+  ("you@company.com") are identical in both languages, per spec. A handful
+  of narrow strings were never included in the provided translation and
+  remain clearly marked placeholders rather than invented Chinese (see
+  "Deliberately left as placeholders" below) — search `content.js` for
+  `ZH PLACEHOLDER`.
+- Cloudflare Web Analytics: a cookieless beacon script in `index.html`,
+  per spec 3's updated "Data protection and privacy" section. It processes
+  some aggregate technical data (approximate location, browser type) but
+  sets no cookies, so the checklist's anonymity claim still holds for
+  anyone who doesn't leave an email. The beacon token is a placeholder
+  (`YOUR_BEACON_TOKEN`) — see "Deliberately left as placeholders."
 
 ## Deliberately left as placeholders
 
 1. **A handful of UI strings with no supplied Chinese translation** —
    `content.js`, `zh.submitInvalidEmail`, `zh.submitNeedsConsent`,
-   `zh.submittedHeadline`, `zh.submittedBody`, and each section's
-   `label.zh` (the small caption above the question, e.g. "Communication"
-   — the spec gives translated *questions*, not this label). Spec 2's
-   translation didn't cover these, so they're left as placeholders rather
-   than guessed.
-2. **Full privacy notice** — `privacy-notice.html` is a stub; the banner
+   `zh.submittedHeadline`, `zh.submittedBody`. No spec has covered these,
+   so they're left as placeholders rather than guessed. (The six section
+   labels that were placeholders through spec 2 are now filled in with
+   spec 3's real translations — 沟通, 规划, 对接人, 信任与关系,
+   决策、速度与沟通渠道, 调整能否持续奏效.)
+2. **Cloudflare Web Analytics beacon token** — `index.html`,
+   `YOUR_BEACON_TOKEN`. The real token comes from Katarina's own Cloudflare
+   dashboard (Analytics & Logs > Web Analytics) once she registers this
+   site's domain there — that's an administrative step on her side, not
+   something guessable here. Until it's replaced, the script loads but
+   reports to no real site.
+3. **Full privacy notice** — `privacy-notice.html` is a stub; the banner
    already links to it, in both languages.
-3. **Package-to-gap mapping and deeper pattern wording for the follow-up
+4. **Package-to-gap mapping and deeper pattern wording for the follow-up
    email** — `email-template.js`, `PACKAGE_MAP` and `DEEPER_PATTERN`. The
    spec repeats explicitly that neither should be guessed.
-4. **Actual email sending** — `email-template.js`, `sendFollowUpEmail()`.
+5. **Actual email sending** — `email-template.js`, `sendFollowUpEmail()`.
    Right now it only composes the email and logs it to the console; no
    backend endpoint exists yet. Once someone submits, the processors
    involved are Cloudflare (hosting), ClickUp (storing the email + answer
@@ -117,7 +130,10 @@ Chinese copy — worth a second look before this goes live.
   Enforced by whatever stores the record (e.g. ClickUp), not by this
   static front-end — noted in `email-template.js` for whoever wires up
   that backend.
-- **Analytics/tracking**: confirmed as none. Nothing to build; noted above.
+- **Analytics/tracking**: spec 2 said none; spec 3 supersedes that and
+  specifies Cloudflare Web Analytics instead (cookieless, aggregate
+  technical data only). Built as the beacon script in `index.html`, noted
+  above and in "Deliberately left as placeholders."
 
 ## Notes on a few judgment calls made during the build
 
