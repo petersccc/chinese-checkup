@@ -2,9 +2,9 @@
  * app.js
  * ------
  * State, navigation, scoring, and rendering for the checkup.
- * Depends on content.js (STRINGS, SECTIONS, STRENGTH_LINES, WEAKNESS_LINES),
- * photo-data.js (PHOTO_DATA_URI), and email-template.js (sendFollowUpEmail),
- * all loaded before this file.
+ * Depends on content.js (STRINGS, AUTHOR_NAME, SECTIONS, STRENGTH_LINES,
+ * WEAKNESS_LINES), photo-data.js (PHOTO_DATA_URI, PHOTO_DATA_URI_CTA), and
+ * email-template.js (sendFollowUpEmail), all loaded before this file.
  *
  * Slide indices (internal, not shown to the user):
  *   0        Opening
@@ -82,6 +82,9 @@ function buildTopbar({ backVisible, onBack, activeSectionIndex }) {
     spacer.style.flex = "1";
     bar.appendChild(spacer);
   } else {
+    const progress = document.createElement("div");
+    progress.className = "progress";
+
     const dots = document.createElement("div");
     dots.className = "dots";
     SECTIONS.forEach((_, i) => {
@@ -91,7 +94,18 @@ function buildTopbar({ backVisible, onBack, activeSectionIndex }) {
         (i === activeSectionIndex ? " active" : i < activeSectionIndex ? " done" : "");
       dots.appendChild(dot);
     });
-    bar.appendChild(dots);
+    progress.appendChild(dots);
+
+    // Spec: "a slide position number, such as 2/6, shown next to the
+    // dots... The number reflects position in the six question slides
+    // only, not the full eight slide sequence." Numeric only, so it's
+    // identical in both languages -- no translation needed.
+    const position = document.createElement("span");
+    position.className = "progress-num";
+    position.textContent = `${activeSectionIndex + 1}/${SECTIONS.length}`;
+    progress.appendChild(position);
+
+    bar.appendChild(progress);
   }
 
   const langBtn = document.createElement("button");
@@ -109,10 +123,11 @@ function buildTopbar({ backVisible, onBack, activeSectionIndex }) {
 
 // ---------------------------------------------------------------------------
 // Opening slide (slide 1 in the doc, index 0 here)
-// Confirmed "Option A" layout from opening-slide-real-photo.html:
-// compact title, then a large dominant circular photo, then the prominent
-// (but not bold) subtitle, then the start button, then nothing else until
-// the credit line pinned near the bottom.
+// Confirmed "Option A" layout, per opening-and-results-updated.html:
+// compact title, then a large dominant circular photo, then her name
+// (italic/bold, matching the bottom credit line's treatment), then the
+// prominent (but not bold) subtitle, then the start button, then nothing
+// else until the credit line pinned near the bottom.
 // ---------------------------------------------------------------------------
 function renderOpening(panel) {
   const wrap = document.createElement("div");
@@ -126,8 +141,15 @@ function renderOpening(panel) {
   const photo = document.createElement("img");
   photo.className = "opening-photo";
   photo.src = PHOTO_DATA_URI; // embedded image data, see photo-data.js
-  photo.alt = "Katarina Peters";
+  photo.alt = AUTHOR_NAME;
   wrap.appendChild(photo);
+
+  // Name is never translated (spec, "Language"), so it's read from the
+  // language-independent AUTHOR_NAME constant, not t().
+  const name = document.createElement("p");
+  name.className = "opening-name";
+  name.textContent = AUTHOR_NAME;
+  wrap.appendChild(name);
 
   const subtitle = document.createElement("p");
   subtitle.className = "opening-subtitle";
@@ -164,7 +186,10 @@ function renderOpening(panel) {
 function buildPrivacyBanner() {
   const banner = document.createElement("div");
   banner.className = "privacy-banner";
-  banner.textContent = t("privacyNotice") + " ";
+  // The trailing space before the link (English only) lives in the
+  // privacyNotice string itself in content.js, since Chinese punctuation
+  // doesn't need one -- see that file's comment on privacyNotice/zh.
+  banner.textContent = t("privacyNotice");
   const link = document.createElement("a");
   // Placeholder target -- the full privacy notice is a separate document,
   // not yet written (spec, "Data protection and privacy").
@@ -307,10 +332,29 @@ function renderResults(panel) {
   content.appendChild(weaknessText);
 
   if (!state.submitted) {
-    const ctaLine = document.createElement("p");
-    ctaLine.className = "cta-line";
-    ctaLine.textContent = t("ctaLine");
-    content.appendChild(ctaLine);
+    // Spec: a small circular photo of Katarina next to the CTA text,
+    // since this is the one place on the page written in her own first
+    // person voice. The spam-folder aside is merged into the same
+    // paragraph as a quieter, smaller note, not a separate line.
+    const ctaRow = document.createElement("div");
+    ctaRow.className = "cta-row";
+
+    const ctaPhoto = document.createElement("img");
+    ctaPhoto.className = "cta-photo";
+    ctaPhoto.src = PHOTO_DATA_URI_CTA; // embedded image data, see photo-data.js
+    ctaPhoto.alt = AUTHOR_NAME;
+    ctaRow.appendChild(ctaPhoto);
+
+    const ctaText = document.createElement("p");
+    ctaText.className = "cta-text";
+    ctaText.appendChild(document.createTextNode(t("ctaLine") + " "));
+    const spamAside = document.createElement("span");
+    spamAside.className = "spam-inline";
+    spamAside.textContent = t("ctaSpamAside");
+    ctaText.appendChild(spamAside);
+    ctaRow.appendChild(ctaText);
+
+    content.appendChild(ctaRow);
 
     const emailInput = document.createElement("input");
     emailInput.className = "email-input";
@@ -382,6 +426,15 @@ function renderResults(panel) {
     submittedBlock.appendChild(body);
     content.appendChild(submittedBlock);
   }
+
+  // Spec: "Below the button, a smaller version of the credit line...
+  // same italic black treatment otherwise." Shown in both the form and
+  // submitted states, since it's a persistent credit rather than part of
+  // either specific state.
+  const credit = document.createElement("p");
+  credit.className = "results-credit";
+  credit.textContent = t("authorCredit");
+  content.appendChild(credit);
 
   panel.appendChild(content);
 

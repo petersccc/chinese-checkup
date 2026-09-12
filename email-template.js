@@ -2,7 +2,7 @@
  * email-template.js
  * ------------------
  * Builds the follow-up email described in "checkup-build-specification
- * 1.md", section "Follow up email". This is the template/mechanism only.
+ * 2.md", section "Follow up email". This is the template/mechanism only.
  * Two pieces of content are explicitly NOT settled per that spec and must
  * not be guessed:
  *   1. Which service package maps to each weakest section (PACKAGE_MAP below).

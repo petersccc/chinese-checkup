@@ -12,6 +12,10 @@
   --panel-alt: #F0E9D8;
   --ink: #3A2E22;
   --ink-muted: #7A6C58;
+  /* Deepened, near-black warm brown for the two results statement boxes
+     -- distinct from and a step darker than --ink, so they read as
+     emphasized without using pure black anywhere on the page. */
+  --ink-deep: #2A1F16;
   --olive: #6E7A4F;
   --olive-deep: #55603C;
   --tan: #B08D57;
@@ -79,11 +83,27 @@ body {
 
 .back-btn[hidden] { visibility: hidden; }
 
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
 .dots {
   display: flex;
   gap: 6px;
-  flex: 1;
-  justify-content: center;
+}
+
+/* Spec: "a slide position number, such as 2/6... in the same dark olive
+   color as the primary button." Numeric only -- identical in both
+   languages, never a score or percentage. */
+.progress-num {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--olive-deep);
 }
 
 .dot {
@@ -267,10 +287,10 @@ body {
 /* Opening slide                                                          */
 /* ---------------------------------------------------------------------- */
 
-/* Confirmed "Option A" layout, matching opening-slide-real-photo.html:
-   compact title, then a large dominant photo, then the prominent (but not
-   bold) subtitle, then the start button, then nothing else until the
-   credit line pinned near the bottom via the spacer. */
+/* Confirmed "Option A" layout, per opening-and-results-updated.html:
+   compact title, then a large dominant photo, then her name, then the
+   prominent (but not bold) subtitle, then the start button, then nothing
+   else until the credit line pinned near the bottom via the spacer. */
 .opening {
   display: flex;
   flex-direction: column;
@@ -288,14 +308,24 @@ body {
 }
 
 .opening-photo {
-  width: 200px;
-  height: 200px;
+  width: 190px;
+  height: 190px;
   max-width: 60vw;
   max-height: 60vw;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 22px;
   box-shadow: 0 0 0 5px var(--panel-alt), 0 0 0 6px var(--card-border);
+}
+
+/* Name under the photo -- same italic/bold/ink treatment as the credit
+   line at the bottom (spec, opening page section). */
+.opening-name {
+  text-align: center;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 14px;
+  margin: 10px 0 20px 0;
 }
 
 .opening-subtitle {
@@ -389,18 +419,47 @@ body {
 .result-text {
   font-size: 13.5px;
   line-height: 1.6;
-  color: var(--ink);
+  /* Medium weight + deepened near-black brown, per spec: distinct from
+     and a step darker than ordinary body text, so it reads as
+     emphasized without ever using pure black. */
+  font-weight: 600;
+  color: var(--ink-deep);
   background: var(--panel-alt);
   border-radius: 14px;
   padding: 16px;
   margin: 0 0 16px 0;
 }
 
-.cta-line {
+/* CTA row: a small photo of Katarina next to the CTA text, since this is
+   the one place on the page written in her own first-person voice. */
+.cta-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 6px 0 8px 0;
+}
+
+.cta-photo {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px var(--panel-alt), 0 0 0 4px var(--card-border);
+}
+
+.cta-text {
   font-size: 13px;
   line-height: 1.5;
   color: var(--ink);
-  margin: 0 0 12px 0;
+  margin: 0;
+}
+
+/* The spam-folder aside, merged into the same paragraph as a quieter,
+   smaller note rather than a separate announcement. */
+.spam-inline {
+  color: var(--ink-muted);
+  font-size: 12px;
 }
 
 .email-input {
@@ -452,6 +511,18 @@ body {
   font-size: 13.5px;
   color: var(--ink-muted);
   line-height: 1.5;
+}
+
+/* Smaller version of the opening page's credit line, sized down to fit
+   this more crowded slide -- same italic treatment otherwise. Shown in
+   both the form and submitted states. */
+.results-credit {
+  font-style: italic;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  font-size: 11px;
+  margin: 10px 0 0 0;
 }
 
 /* ---------------------------------------------------------------------- */
