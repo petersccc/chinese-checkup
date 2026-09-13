@@ -3,21 +3,22 @@
  * ----------
  * All locked copy and scoring data for the Quick Cross Cultural Self
  * Evaluation Checkup (Chinese-company version), per
- * "checkup-build-specification 3.md" (supersedes specs 1 and 2, and the
+ * "checkup-build-specification 4.md" (supersedes specs 1-3, and the
  * earlier chinese-checkup-build-context_1.md). Nothing in this file
  * should be reworded or restructured without checking that document first.
  *
  * Chinese strings: the full Chinese translation is real, reviewed,
  * approved copy — not a placeholder — and is used here verbatim,
- * including the six section labels added in spec 3 (previously
- * placeholders). Three things are NOT translated, per spec: Katarina
- * Peters' name, the business name, and the numeric slide-position
- * indicator (all handled as language-independent values below), plus the
- * email placeholder "you@company.com" (kept in Latin as a universal
- * example). A few narrow UI strings were never included in the provided
- * translation (client-side validation messages and the post-submit
- * confirmation text) — those remain clearly marked placeholders rather
- * than invented translations; search for "ZH PLACEHOLDER" to find them.
+ * including the six section labels added in spec 3, the company-name
+ * placeholder, and the post-submit confirmation text (given directly in
+ * chat, not through a spec document). Three things are NOT translated,
+ * per spec: Katarina Peters' name, the business name, and the numeric
+ * slide-position indicator (all handled as language-independent values
+ * below), plus the email placeholder "you@company.com" (kept in Latin as
+ * a universal example). A couple of narrow client-side validation
+ * messages were never included in any provided translation -- those
+ * remain clearly marked placeholders rather than invented translations;
+ * search for "ZH PLACEHOLDER" to find them.
  */
 
 // ---------------------------------------------------------------------------
@@ -90,8 +91,9 @@ const STRINGS = {
     submitInvalidEmail: "[ZH PLACEHOLDER — invalid email message]",
     submitNeedsCompany: "[ZH PLACEHOLDER — needs company name message]",
     submitNeedsConsent: "[ZH PLACEHOLDER — needs consent message]",
-    submittedHeadline: "[ZH PLACEHOLDER — submitted headline]",
-    submittedBody: "[ZH PLACEHOLDER — submitted body]",
+    // Split the same way the English headline/body pair is split.
+    submittedHeadline: "谢谢。",
+    submittedBody: "你的专属分析结果正在发送至你的邮箱。",
     langToggleLabel: "EN",
   },
 };

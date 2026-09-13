@@ -117,15 +117,17 @@ preview the app during development).
 
 ## Deliberately left as placeholders
 
-1. **A handful of UI strings with no supplied Chinese translation** —
-   `content.js`, `zh.submitInvalidEmail`, `zh.submitNeedsConsent`,
-   `zh.submittedHeadline`, `zh.submittedBody`. No spec has covered these,
-   so they're left as placeholders rather than guessed. (The six section
-   labels that were placeholders through spec 2 are now filled in with
-   spec 3's real translations — 沟通, 规划, 对接人, 信任与关系,
-   决策、速度与沟通渠道, 调整能否持续奏效. The company-name field's
-   placeholder is likewise filled in now — "Company name" / 公司名称 —
-   given directly, not through a spec document; see the note below.)
+1. **Two UI strings with no supplied Chinese translation** —
+   `content.js`, `zh.submitInvalidEmail`, `zh.submitNeedsConsent`. Neither
+   spec has covered these, so they're left as placeholders rather than
+   guessed. (The six section labels that were placeholders through spec 2
+   are now filled in with spec 3's real translations — 沟通, 规划, 对接人,
+   信任与关系, 决策、速度与沟通渠道, 调整能否持续奏效. The company-name
+   field's placeholder — "Company name" / 公司名称 — and the post-submit
+   confirmation text — "Thank you." / "Your personalized overview is on
+   its way to your inbox." / 谢谢。/ 你的专属分析结果正在发送至你的邮箱。
+   — were likewise given directly in chat rather than through a spec
+   document, and are filled in now too.)
 2. **Cloudflare Web Analytics beacon token** — `index.html`,
    `YOUR_BEACON_TOKEN`. The real token comes from Katarina's own Cloudflare
    dashboard (Analytics & Logs > Web Analytics) once she registers this
