@@ -3,8 +3,9 @@
  * ------
  * State, navigation, scoring, and rendering for the checkup.
  * Depends on content.js (STRINGS, AUTHOR_NAME, SECTIONS, STRENGTH_LINES,
- * WEAKNESS_LINES), photo-data.js (PHOTO_DATA_URI, PHOTO_DATA_URI_CTA), and
- * email-template.js (sendFollowUpEmail), all loaded before this file.
+ * WEAKNESS_LINES), photo-data.js (PHOTO_DATA_URI, PHOTO_DATA_URI_CTA),
+ * email-template.js (sendFollowUpEmail), and clickup-submit.js
+ * (submitToClickUp), all loaded before this file.
  *
  * Slide indices (internal, not shown to the user):
  *   0        Opening
@@ -19,6 +20,14 @@ const state = {
   submitted: false,
   submitting: false,
   formError: "",
+  // render() rebuilds the whole DOM from scratch on every change (see
+  // `render()` at the bottom of this file), including after a failed
+  // validation re-render -- so typed values must live here, not just in
+  // the input elements, or a validation error would silently erase
+  // whatever the visitor had already typed.
+  companyName: "",
+  email: "",
+  consentChecked: false,
 };
 
 function t(key) {
@@ -356,11 +365,29 @@ function renderResults(panel) {
 
     content.appendChild(ctaRow);
 
+    // Company name: required alongside email, same validation pattern.
+    // Value lives in `state` (not just the input) so a validation-error
+    // re-render doesn't wipe out what the visitor already typed.
+    const companyInput = document.createElement("input");
+    companyInput.className = "email-input";
+    companyInput.type = "text";
+    companyInput.placeholder = t("companyPlaceholder");
+    companyInput.id = "companyInput";
+    companyInput.value = state.companyName;
+    companyInput.addEventListener("input", () => {
+      state.companyName = companyInput.value;
+    });
+    content.appendChild(companyInput);
+
     const emailInput = document.createElement("input");
     emailInput.className = "email-input";
     emailInput.type = "email";
     emailInput.placeholder = t("emailPlaceholder");
     emailInput.id = "emailInput";
+    emailInput.value = state.email;
+    emailInput.addEventListener("input", () => {
+      state.email = emailInput.value;
+    });
     content.appendChild(emailInput);
 
     const errorEl = document.createElement("p");
@@ -373,6 +400,10 @@ function renderResults(panel) {
     const consentInput = document.createElement("input");
     consentInput.type = "checkbox";
     consentInput.id = "consentInput";
+    consentInput.checked = state.consentChecked;
+    consentInput.addEventListener("change", () => {
+      state.consentChecked = consentInput.checked;
+    });
     consentLabel.appendChild(consentInput);
     const consentText = document.createElement("span");
     consentText.textContent = t("consentText");
@@ -385,16 +416,22 @@ function renderResults(panel) {
     submitBtn.textContent = state.submitting ? "..." : t("submitButton");
     submitBtn.disabled = state.submitting;
     submitBtn.addEventListener("click", async () => {
+      const companyName = companyInput.value.trim();
       const email = emailInput.value.trim();
       const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-      if (!consentInput.checked) {
-        state.formError = t("submitNeedsConsent");
+      if (!companyName) {
+        state.formError = t("submitNeedsCompany");
         render();
         return;
       }
       if (!emailValid) {
         state.formError = t("submitInvalidEmail");
+        render();
+        return;
+      }
+      if (!consentInput.checked) {
+        state.formError = t("submitNeedsConsent");
         render();
         return;
       }
@@ -406,7 +443,13 @@ function renderResults(panel) {
       // See email-template.js: this is a front-end stub, no backend is
       // wired up yet (spec, "Follow up email" leaves the email content
       // and package mapping unsettled, and no send endpoint exists).
-      await sendFollowUpEmail(scoreResult, email);
+      // See clickup-submit.js / worker/clickup-submit-worker.js: this one
+      // IS wired up (create-or-update against the Lead Magnet list),
+      // best-effort -- it never blocks reaching the "thank you" state.
+      await Promise.all([
+        sendFollowUpEmail(scoreResult, email),
+        submitToClickUp({ email, companyName }),
+      ]);
 
       state.submitting = false;
       state.submitted = true;

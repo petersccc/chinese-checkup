@@ -37,6 +37,14 @@ preview the app during development).
   count-up animation.
 - `email-template.js` — builds the follow-up email content and is the
   integration point for actually sending it. Not wired to a backend yet.
+- `clickup-submit.js` — front-end side of the real, working ClickUp
+  integration: reads the page's `?ref=` parameter and posts it plus the
+  submitted email/company name to a Cloudflare Worker. Never sees the
+  ClickUp API token.
+- `worker/` — the Cloudflare Worker itself (`clickup-submit-worker.js`),
+  which holds the ClickUp API token (as a Worker secret) and does the
+  actual create-or-update against the Lead Magnet list. See
+  `worker/README.md` for the one-time deployment checklist.
 - `privacy-notice.html` — placeholder page. The privacy banner on question
   slides links here until the real privacy notice exists.
 
@@ -67,9 +75,30 @@ preview the app during development).
   with no connecting sentence between them; a CTA row with a small circular
   photo of Katarina next to the CTA text (the one place on the page in her
   own first-person voice), the spam-folder note merged into that same
-  paragraph as a quieter, smaller aside rather than a separate line; email
-  field; required consent checkbox; and a smaller version of the credit
-  line below the button (shown in both the pre- and post-submit states).
+  paragraph as a quieter, smaller aside rather than a separate line; a
+  required company-name field and email field (validated in that order,
+  then consent); required consent checkbox; and a smaller version of the
+  credit line below the button (shown in both the pre- and post-submit
+  states). Typed field values are kept in `state`, not just the DOM, so a
+  validation error on one field doesn't erase what was typed in another.
+- Real ClickUp integration: on submit, the email, company name, and any
+  `?ref=` URL parameter are posted to a Cloudflare Worker
+  (`clickup-submit.js` → `worker/clickup-submit-worker.js`), which:
+  - if a ref code was present, searches the **Lead Magnet** list (inside
+    the **Projekte** folder) for a task whose **Ref Code** field matches
+    it, and if found, sets that task's **E-Mail** and checks **Check-up
+    completed**, leaving its name, Source, Version, and Outreach Date
+    untouched;
+  - otherwise (no ref code, or no match) creates a new task named after
+    the submitted company name, with **E-Mail** filled in, **Version**
+    set to China, **Source** set to Cold, and **Check-up completed**
+    checked, leaving **Ref Code** empty.
+
+  The list/field/dropdown-option IDs baked into the Worker were looked up
+  directly against the live list via the ClickUp API, not guessed. This
+  call is best-effort: if the Worker is unreachable (e.g. before it's
+  deployed) the visitor still reaches the "thank you" state, and the
+  failure is only logged to the console.
 - Full language toggle: every UI string, all six questions, the six
   section labels, and the results-slide content switch between English and
   the real, approved Chinese translation. Katarina's name, the business
@@ -90,29 +119,39 @@ preview the app during development).
 
 1. **A handful of UI strings with no supplied Chinese translation** —
    `content.js`, `zh.submitInvalidEmail`, `zh.submitNeedsConsent`,
-   `zh.submittedHeadline`, `zh.submittedBody`. No spec has covered these,
-   so they're left as placeholders rather than guessed. (The six section
-   labels that were placeholders through spec 2 are now filled in with
-   spec 3's real translations — 沟通, 规划, 对接人, 信任与关系,
-   决策、速度与沟通渠道, 调整能否持续奏效.)
+   `zh.submittedHeadline`, `zh.submittedBody`, `zh.companyPlaceholder`,
+   `zh.submitNeedsCompany`. No spec has covered these, so they're left as
+   placeholders rather than guessed. (The six section labels that were
+   placeholders through spec 2 are now filled in with spec 3's real
+   translations — 沟通, 规划, 对接人, 信任与关系, 决策、速度与沟通渠道,
+   调整能否持续奏效.)
 2. **Cloudflare Web Analytics beacon token** — `index.html`,
    `YOUR_BEACON_TOKEN`. The real token comes from Katarina's own Cloudflare
    dashboard (Analytics & Logs > Web Analytics) once she registers this
    site's domain there — that's an administrative step on her side, not
    something guessable here. Until it's replaced, the script loads but
    reports to no real site.
-3. **Full privacy notice** — `privacy-notice.html` is a stub; the banner
+3. **ClickUp Worker URL** — `clickup-submit.js`,
+   `CLICKUP_WORKER_URL = "https://YOUR-WORKER-SUBDOMAIN.workers.dev"`.
+   Update this once the Worker in `worker/` is deployed (see
+   `worker/README.md`) and its real URL is known.
+4. **ClickUp API token** — never in this repo at all, by design. It's a
+   Cloudflare Worker secret (`CLICKUP_API_TOKEN`), set directly by
+   Katarina in the Cloudflare dashboard or via `wrangler secret put` —
+   see `worker/README.md`.
+5. **Full privacy notice** — `privacy-notice.html` is a stub; the banner
    already links to it, in both languages.
-4. **Package-to-gap mapping and deeper pattern wording for the follow-up
+6. **Package-to-gap mapping and deeper pattern wording for the follow-up
    email** — `email-template.js`, `PACKAGE_MAP` and `DEEPER_PATTERN`. The
    spec repeats explicitly that neither should be guessed.
-5. **Actual email sending** — `email-template.js`, `sendFollowUpEmail()`.
+7. **Actual email sending** — `email-template.js`, `sendFollowUpEmail()`.
    Right now it only composes the email and logs it to the console; no
-   backend endpoint exists yet. Once someone submits, the processors
-   involved are Cloudflare (hosting), ClickUp (storing the email + answer
-   overview), and Calendly (discovery call booking) — each needs its own
-   data processing agreement, an administrative step for Katarina, not
-   something this build does.
+   backend endpoint exists yet. (Unrelated to the ClickUp integration
+   above, which is real and working once deployed.) Once someone submits,
+   the other processors involved are Cloudflare (hosting) and Calendly
+   (discovery call booking) — each needs its own data processing
+   agreement, an administrative step for Katarina, not something this
+   build does.
 
 ## One translated line flagged as provisional by the spec itself
 
@@ -159,6 +198,17 @@ Chinese copy — worth a second look before this goes live.
   in both the pre-submit form state and the post-submit thank-you state,
   since the spec describes it as sitting below the button generally,
   not as part of either specific state.
+
+- The ClickUp "Lead Magnet" list has its own **Company** custom field
+  (short text), separate from the task's name. The instructions for the
+  create path only said to *name* the new task using the company name,
+  not to also fill that field — so `worker/clickup-submit-worker.js`
+  leaves it unset. The field's ID is still defined there in a comment,
+  so it's a one-line change if that turns out to be wanted too.
+- Company name and email are validated in the order they appear on the
+  page (company, then email, then consent), rather than the original
+  consent-then-email order, since that's the order a visitor actually
+  fills them in.
 
 None of these affect scoring, wording, or the palette — only where a
 couple of controls sit or how a state is communicated.

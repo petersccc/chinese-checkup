@@ -50,9 +50,14 @@ const STRINGS = {
     ctaLine: "If you'd like to improve your weaker spots and amplify your strengths, leave your email for a tailor made strategy.",
     ctaSpamAside: "And don't forget to check your spam folder, too!",
     emailPlaceholder: "you@company.com",
+    // New field: company name, required alongside email before submit.
+    // No Chinese wording was supplied for this (added after the spec's
+    // translation pass) -- see zh.companyPlaceholder / zh.submitNeedsCompany.
+    companyPlaceholder: "Your company name",
     consentText: "I agree that my answers may be linked to my email address so I can receive my personalized overview and recommended next step.",
     submitButton: "Send me my strategy",
     submitInvalidEmail: "Please enter a valid email address.",
+    submitNeedsCompany: "Please enter your company name.",
     submitNeedsConsent: "Please tick the consent box before submitting.",
     submittedHeadline: "Thank you.",
     submittedBody: "Your personalized overview is on its way to your inbox.",
@@ -81,10 +86,12 @@ const STRINGS = {
     // way the rest of this translation was, treat as provisional."
     ctaSpamAside: "也别忘了看看垃圾邮件文件夹哦！",
     emailPlaceholder: "you@company.com",
+    // ZH PLACEHOLDER: not included in any provided translation.
+    companyPlaceholder: "[ZH PLACEHOLDER — company name field placeholder]",
     consentText: "我同意将我的回答与我的邮箱地址关联，以便我能收到专属的分析结果和后续建议。",
     submitButton: "发送我的专属策略",
-    // ZH PLACEHOLDER: not included in the provided translation.
     submitInvalidEmail: "[ZH PLACEHOLDER — invalid email message]",
+    submitNeedsCompany: "[ZH PLACEHOLDER — needs company name message]",
     submitNeedsConsent: "[ZH PLACEHOLDER — needs consent message]",
     submittedHeadline: "[ZH PLACEHOLDER — submitted headline]",
     submittedBody: "[ZH PLACEHOLDER — submitted body]",
