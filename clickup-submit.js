@@ -15,7 +15,7 @@
 // worker/README.md for the deployment checklist). Until then, submission
 // will fail silently (logged to the console) without blocking the UI --
 // the visitor still sees the normal "thank you" state.
-const CLICKUP_WORKER_URL = "https://YOUR-WORKER-SUBDOMAIN.workers.dev";
+const CLICKUP_WORKER_URL = "https://summer-disk-8a2f.nachhilfe-kp.workers.dev";
 
 /**
  * Reads the `ref` query parameter from the current page URL, e.g.
