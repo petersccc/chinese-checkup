@@ -11,11 +11,9 @@
  * token -- see worker/clickup-submit-worker.js for that.
  */
 
-// TODO: replace with the real Worker URL once it's deployed (see
-// worker/README.md for the deployment checklist). Until then, submission
-// will fail silently (logged to the console) without blocking the UI --
-// the visitor still sees the normal "thank you" state.
-const CLICKUP_WORKER_URL = "https://YOUR-WORKER-SUBDOMAIN.workers.dev";
+// Deployed 2026-09-13 (see worker/README.md for how, if it's ever
+// redeployed elsewhere and this needs updating).
+const CLICKUP_WORKER_URL = "https://summer-disk-8a2f.nachhilfe-kp.workers.dev";
 
 /**
  * Reads the `ref` query parameter from the current page URL, e.g.
