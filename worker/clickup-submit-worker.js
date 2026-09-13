@@ -17,9 +17,10 @@
  *       and the task name are left untouched.
  *   - If there was no `ref` parameter, or no task matched it: create a
  *     new task instead -- named using the submitted company name, with
- *     E-Mail filled in, Version set to "China", Source set to "Cold",
- *     and "Check-up completed" checked. Ref Code is left empty (ClickUp
- *     leaves custom fields unset by default, so this needs no action).
+ *     E-Mail and Company both filled in, Version set to "China", Source
+ *     set to "Cold", and "Check-up completed" checked. Ref Code is left
+ *     empty (ClickUp leaves custom fields unset by default, so this
+ *     needs no action).
  *
  * IDs below were looked up directly against the live "Lead Magnet" list
  * via the ClickUp API (not guessed) on 2026-09-13. If the list is ever
@@ -35,12 +36,7 @@ const FIELD_SOURCE = "1e4c9e6f-f0eb-43b7-8ef1-e5084f62ffac"; // Source (dropdown
 const FIELD_VERSION = "0f5799ba-0ec1-4c02-a3de-c268508937b6"; // Version (dropdown)
 const FIELD_REF_CODE = "955d616f-172b-4b7c-b853-2f317f5fb146"; // Ref Code (short_text)
 const FIELD_CHECKUP_COMPLETED = "7b096a97-b6ff-4a5c-ae34-8b358789e5e4"; // Check-up completed (checkbox)
-// FIELD_COMPANY ("Company", short_text) = d2d67d9c-9e90-411c-8854-cf51b770d2c0 --
-// defined here for reference but NOT written to. The spec only says the new
-// task should be *named* using the company name, not that this separate
-// custom field should also be filled -- left alone accordingly. Trivial to
-// add a setCustomField(taskId, FIELD_COMPANY, companyName) call below if
-// that turns out to be wanted too.
+const FIELD_COMPANY = "d2d67d9c-9e90-411c-8854-cf51b770d2c0"; // Company (short_text)
 
 // Dropdown option UUIDs.
 const VERSION_OPTION_CHINA = "c055836d-0aa2-4f0c-9c3c-f0d60687a1e2";
@@ -89,6 +85,7 @@ export default {
 
       const newTaskId = await createTask(token, companyName);
       await setCustomField(token, newTaskId, FIELD_EMAIL, email);
+      await setCustomField(token, newTaskId, FIELD_COMPANY, companyName);
       await setCustomField(token, newTaskId, FIELD_VERSION, VERSION_OPTION_CHINA);
       await setCustomField(token, newTaskId, FIELD_SOURCE, SOURCE_OPTION_COLD);
       await setCustomField(token, newTaskId, FIELD_CHECKUP_COMPLETED, true);

@@ -51,9 +51,7 @@ const STRINGS = {
     ctaSpamAside: "And don't forget to check your spam folder, too!",
     emailPlaceholder: "you@company.com",
     // New field: company name, required alongside email before submit.
-    // No Chinese wording was supplied for this (added after the spec's
-    // translation pass) -- see zh.companyPlaceholder / zh.submitNeedsCompany.
-    companyPlaceholder: "Your company name",
+    companyPlaceholder: "Company name",
     consentText: "I agree that my answers may be linked to my email address so I can receive my personalized overview and recommended next step.",
     submitButton: "Send me my strategy",
     submitInvalidEmail: "Please enter a valid email address.",
@@ -86,8 +84,7 @@ const STRINGS = {
     // way the rest of this translation was, treat as provisional."
     ctaSpamAside: "也别忘了看看垃圾邮件文件夹哦！",
     emailPlaceholder: "you@company.com",
-    // ZH PLACEHOLDER: not included in any provided translation.
-    companyPlaceholder: "[ZH PLACEHOLDER — company name field placeholder]",
+    companyPlaceholder: "公司名称",
     consentText: "我同意将我的回答与我的邮箱地址关联，以便我能收到专属的分析结果和后续建议。",
     submitButton: "发送我的专属策略",
     submitInvalidEmail: "[ZH PLACEHOLDER — invalid email message]",

@@ -90,9 +90,9 @@ preview the app during development).
     completed**, leaving its name, Source, Version, and Outreach Date
     untouched;
   - otherwise (no ref code, or no match) creates a new task named after
-    the submitted company name, with **E-Mail** filled in, **Version**
-    set to China, **Source** set to Cold, and **Check-up completed**
-    checked, leaving **Ref Code** empty.
+    the submitted company name, with **E-Mail** and **Company** both
+    filled in, **Version** set to China, **Source** set to Cold, and
+    **Check-up completed** checked, leaving **Ref Code** empty.
 
   The list/field/dropdown-option IDs baked into the Worker were looked up
   directly against the live list via the ClickUp API, not guessed. This
@@ -119,12 +119,13 @@ preview the app during development).
 
 1. **A handful of UI strings with no supplied Chinese translation** —
    `content.js`, `zh.submitInvalidEmail`, `zh.submitNeedsConsent`,
-   `zh.submittedHeadline`, `zh.submittedBody`, `zh.companyPlaceholder`,
-   `zh.submitNeedsCompany`. No spec has covered these, so they're left as
-   placeholders rather than guessed. (The six section labels that were
-   placeholders through spec 2 are now filled in with spec 3's real
-   translations — 沟通, 规划, 对接人, 信任与关系, 决策、速度与沟通渠道,
-   调整能否持续奏效.)
+   `zh.submittedHeadline`, `zh.submittedBody`. No spec has covered these,
+   so they're left as placeholders rather than guessed. (The six section
+   labels that were placeholders through spec 2 are now filled in with
+   spec 3's real translations — 沟通, 规划, 对接人, 信任与关系,
+   决策、速度与沟通渠道, 调整能否持续奏效. The company-name field's
+   placeholder is likewise filled in now — "Company name" / 公司名称 —
+   given directly, not through a spec document; see the note below.)
 2. **Cloudflare Web Analytics beacon token** — `index.html`,
    `YOUR_BEACON_TOKEN`. The real token comes from Katarina's own Cloudflare
    dashboard (Analytics & Logs > Web Analytics) once she registers this
@@ -200,15 +201,20 @@ Chinese copy — worth a second look before this goes live.
   not as part of either specific state.
 
 - The ClickUp "Lead Magnet" list has its own **Company** custom field
-  (short text), separate from the task's name. The instructions for the
-  create path only said to *name* the new task using the company name,
-  not to also fill that field — so `worker/clickup-submit-worker.js`
-  leaves it unset. The field's ID is still defined there in a comment,
-  so it's a one-line change if that turns out to be wanted too.
+  (short text), separate from the task's name. The original instructions
+  for the create path only said to *name* the new task using the company
+  name; confirmed afterward that the Company field should be filled too
+  — `worker/clickup-submit-worker.js` now sets both on create.
 - Company name and email are validated in the order they appear on the
   page (company, then email, then consent), rather than the original
   consent-then-email order, since that's the order a visitor actually
   fills them in.
+- The company-name field's placeholder ("Company name" / 公司名称) was
+  given directly in chat, not found in the copy of
+  `checkup-build-specification.md` located at the time (that copy didn't
+  contain any mention of a company-name field at all -- it predates that
+  feature). Used the values as given rather than blocking on the mismatch;
+  worth checking that file is the version intended, next time it's cited.
 
 None of these affect scoring, wording, or the palette — only where a
 couple of controls sit or how a state is communicated.
