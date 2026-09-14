@@ -200,9 +200,11 @@ function buildPrivacyBanner() {
   // doesn't need one -- see that file's comment on privacyNotice/zh.
   banner.textContent = t("privacyNotice");
   const link = document.createElement("a");
-  // Placeholder target -- the full privacy notice is a separate document,
-  // not yet written (spec, "Data protection and privacy").
-  link.href = "privacy-notice.html";
+  // Carries the tool's current language toggle state over to the privacy
+  // notice page via a URL parameter, since it opens in a new tab and so
+  // doesn't share this page's in-memory `state` -- privacy-notice.html
+  // reads this same parameter to pick which language to show.
+  link.href = "privacy-notice.html?lang=" + state.lang;
   link.target = "_blank";
   link.rel = "noopener";
   link.textContent = t("privacyLinkText");

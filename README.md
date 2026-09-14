@@ -45,8 +45,14 @@ preview the app during development).
   which holds the ClickUp API token (as a Worker secret) and does the
   actual create-or-update against the Lead Magnet list. See
   `worker/README.md` for the one-time deployment checklist.
-- `privacy-notice.html` — placeholder page. The privacy banner on question
-  slides links here until the real privacy notice exists.
+- `privacy-notice.html` — the real, final privacy notice, in both
+  languages (content from `privacy-notice-final-en.md` /
+  `privacy-notice-final-zh.md`). One page, both languages embedded;
+  a `?lang=en`/`?lang=zh` URL parameter picks which one shows, defaulting
+  to English. The privacy banner on question slides links here with that
+  parameter set to the tool's current language-toggle state, since the
+  link opens in a new tab and so can't read the main page's in-memory
+  `state` directly.
 
 ## What's implemented
 
@@ -114,47 +120,48 @@ preview the app during development).
   sets no cookies, so the checklist's anonymity claim still holds for
   anyone who doesn't leave an email. The beacon token is a placeholder
   (`YOUR_BEACON_TOKEN`) — see "Deliberately left as placeholders."
+- Real privacy notice: `privacy-notice.html`, the finished content from
+  `privacy-notice-final-en.md` / `privacy-notice-final-zh.md`, both
+  embedded in one page. It shows whichever language the "read the full
+  privacy notice" link was opened with, carried over from the tool's own
+  language toggle via a `?lang=` URL parameter (the link opens in a new
+  tab, which can't otherwise see the main page's toggle state) — defaults
+  to English, the tool's own base language, if that parameter is ever
+  missing.
 
 ## Deliberately left as placeholders
 
 1. **Two UI strings with no supplied Chinese translation** —
    `content.js`, `zh.submitInvalidEmail`, `zh.submitNeedsConsent`. Neither
    spec has covered these, so they're left as placeholders rather than
-   guessed. (The six section labels that were placeholders through spec 2
-   are now filled in with spec 3's real translations — 沟通, 规划, 对接人,
-   信任与关系, 决策、速度与沟通渠道, 调整能否持续奏效. The company-name
-   field's placeholder — "Company name" / 公司名称 — and the post-submit
-   confirmation text — "Thank you." / "Your personalized overview is on
-   its way to your inbox." / 谢谢。/ 你的专属分析结果正在发送至你的邮箱。
-   — were likewise given directly in chat rather than through a spec
-   document, and are filled in now too.)
+   guessed. Everything else that was ever a placeholder here — the six
+   section labels, the company-name field's placeholder, the post-submit
+   confirmation text, and now the full privacy notice — has since been
+   filled in with real content, whether from a spec document or given
+   directly in chat.
 2. **Cloudflare Web Analytics beacon token** — `index.html`,
    `YOUR_BEACON_TOKEN`. The real token comes from Katarina's own Cloudflare
    dashboard (Analytics & Logs > Web Analytics) once she registers this
    site's domain there — that's an administrative step on her side, not
    something guessable here. Until it's replaced, the script loads but
    reports to no real site.
-3. **ClickUp Worker URL** — `clickup-submit.js`,
-   `CLICKUP_WORKER_URL = "https://YOUR-WORKER-SUBDOMAIN.workers.dev"`.
-   Update this once the Worker in `worker/` is deployed (see
-   `worker/README.md`) and its real URL is known.
-4. **ClickUp API token** — never in this repo at all, by design. It's a
+3. **ClickUp API token** — never in this repo at all, by design. It's a
    Cloudflare Worker secret (`CLICKUP_API_TOKEN`), set directly by
    Katarina in the Cloudflare dashboard or via `wrangler secret put` —
-   see `worker/README.md`.
-5. **Full privacy notice** — `privacy-notice.html` is a stub; the banner
-   already links to it, in both languages.
-6. **Package-to-gap mapping and deeper pattern wording for the follow-up
+   see `worker/README.md`. (The Worker itself is deployed and live, and
+   its URL is wired into `clickup-submit.js` — only the token stays out
+   of this repo.)
+4. **Package-to-gap mapping and deeper pattern wording for the follow-up
    email** — `email-template.js`, `PACKAGE_MAP` and `DEEPER_PATTERN`. The
    spec repeats explicitly that neither should be guessed.
-7. **Actual email sending** — `email-template.js`, `sendFollowUpEmail()`.
+5. **Actual email sending** — `email-template.js`, `sendFollowUpEmail()`.
    Right now it only composes the email and logs it to the console; no
    backend endpoint exists yet. (Unrelated to the ClickUp integration
-   above, which is real and working once deployed.) Once someone submits,
-   the other processors involved are Cloudflare (hosting) and Calendly
-   (discovery call booking) — each needs its own data processing
-   agreement, an administrative step for Katarina, not something this
-   build does.
+   and the privacy notice above, both of which are real and complete.)
+   Once someone submits, the other processors involved are Cloudflare
+   (hosting) and Calendly (discovery call booking) — each needs its own
+   data processing agreement, an administrative step for Katarina, not
+   something this build does.
 
 ## One translated line flagged as provisional by the spec itself
 
