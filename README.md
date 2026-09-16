@@ -72,6 +72,11 @@ preview the app during development).
 - Question slides require at least one card selected somewhere in the
   section before the Next / "See my results" button is enabled (doesn't
   require every item answered, just not left entirely blank).
+- A small instruction line ("You can select more than one answer." /
+  您可以选择多个答案。) under the framing question on all six question
+  slides, same placement/visual weight as the section label above it
+  (`.question-instruction` in styles.css, deliberately styled the same
+  as `.section-label`).
 - Scoring exactly as specified: 0/2 points per item by polarity, equal
   16.67%-weighted sections, overall rounded to one decimal.
 - Results slide: animated count-up; two separate, plainly labeled
@@ -163,14 +168,17 @@ preview the app during development).
    data processing agreement, an administrative step for Katarina, not
    something this build does.
 
-## One translated line flagged as provisional by the spec itself
+## Translated lines flagged as provisional, not reviewed like the rest
 
-The spec explicitly marks the Chinese spam-folder aside
-("也别忘了看看垃圾邮件文件夹哦！") as "draft only, not yet reviewed the way
-the rest of this translation was, treat as provisional." It's built in as
-given (the spec's instruction was to use it, just flagged for a future
-review pass), but it hasn't had the same review as the rest of the
-Chinese copy — worth a second look before this goes live.
+- The Chinese spam-folder aside ("也别忘了看看垃圾邮件文件夹哦！"), flagged
+  by the spec itself as "draft only, not yet reviewed the way the rest of
+  this translation was, treat as provisional."
+- The Chinese multi-select hint (您可以选择多个答案。), drafted directly
+  rather than reviewed the same way the rest of the Chinese content was.
+
+Both are built in as given/instructed, just not yet given the same review
+pass as the rest of the Chinese copy — worth a second look before this
+goes live.
 
 ## Resolved since earlier drafts (reflected in code/comments, not build-time behavior)
 

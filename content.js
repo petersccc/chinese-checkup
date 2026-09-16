@@ -42,6 +42,9 @@ const STRINGS = {
     lastQuestionButton: "See my results",
     privacyNotice: "Your answers stay anonymous, no name or email is needed to see your result. ",
     privacyLinkText: "Read the full privacy notice",
+    // Shown under the framing question on all six question slides, same
+    // placement/weight as the section label above it.
+    multiSelectHint: "You can select more than one answer.",
     scoreLabel: "your overall result",
     strengthHeading: "Where you're strongest",
     weaknessHeading: "Where to pay attention",
@@ -77,6 +80,9 @@ const STRINGS = {
     // the same way the English notice + link text are split.
     privacyNotice: "你的回答完全匿名，无需提供姓名或邮箱即可查看结果。",
     privacyLinkText: "查看完整隐私声明",
+    // Provisional -- drafted directly rather than reviewed the way the
+    // rest of the Chinese content was.
+    multiSelectHint: "您可以选择多个答案。",
     scoreLabel: "你的总体得分",
     strengthHeading: "你的优势",
     weaknessHeading: "需要关注的方面",

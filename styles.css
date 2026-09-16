@@ -176,10 +176,18 @@ body {
 }
 
 .question {
-  margin: 0 0 18px 0;
+  margin: 0 0 4px 0;
   font-size: 19px;
   line-height: 1.35;
   font-weight: 600;
+}
+
+/* Same placement/weight as .section-label, but under the question
+   instead of above it. */
+.question-instruction {
+  margin: 0 0 18px 0;
+  font-size: 12.5px;
+  color: var(--ink-muted);
 }
 
 .cards {

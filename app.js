@@ -246,6 +246,11 @@ function renderQuestion(panel, slideIdx) {
   question.textContent = section.question[state.lang];
   content.appendChild(question);
 
+  const instruction = document.createElement("p");
+  instruction.className = "question-instruction";
+  instruction.textContent = t("multiSelectHint");
+  content.appendChild(instruction);
+
   const cards = document.createElement("div");
   cards.className = "cards";
 
