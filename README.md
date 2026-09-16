@@ -136,30 +136,27 @@ preview the app during development).
 
 ## Deliberately left as placeholders
 
-1. **One UI string with no supplied Chinese translation** —
-   `content.js`, `zh.submitInvalidEmail` (the invalid-email-format
-   message). No spec has covered this one, so it's left as a placeholder
-   rather than guessed. Everything else that was ever a placeholder here
-   — the six section labels, the company-name field's placeholder, the
-   post-submit confirmation text, the company-name/consent validation
-   messages, and the full privacy notice — has since been filled in with
-   real content, whether from a spec document or given directly in chat.
-2. **Cloudflare Web Analytics beacon token** — `index.html`,
+No `zh` string in `content.js` is a placeholder anymore — the last one
+(`submitInvalidEmail`) was filled in directly in chat. See "Translated
+lines flagged as provisional" below for the ones drafted rather than
+reviewed the way the rest of the Chinese content was.
+
+1. **Cloudflare Web Analytics beacon token** — `index.html`,
    `YOUR_BEACON_TOKEN`. The real token comes from Katarina's own Cloudflare
    dashboard (Analytics & Logs > Web Analytics) once she registers this
    site's domain there — that's an administrative step on her side, not
    something guessable here. Until it's replaced, the script loads but
    reports to no real site.
-3. **ClickUp API token** — never in this repo at all, by design. It's a
+2. **ClickUp API token** — never in this repo at all, by design. It's a
    Cloudflare Worker secret (`CLICKUP_API_TOKEN`), set directly by
    Katarina in the Cloudflare dashboard or via `wrangler secret put` —
    see `worker/README.md`. (The Worker itself is deployed and live, and
    its URL is wired into `clickup-submit.js` — only the token stays out
    of this repo.)
-4. **Package-to-gap mapping and deeper pattern wording for the follow-up
+3. **Package-to-gap mapping and deeper pattern wording for the follow-up
    email** — `email-template.js`, `PACKAGE_MAP` and `DEEPER_PATTERN`. The
    spec repeats explicitly that neither should be guessed.
-5. **Actual email sending** — `email-template.js`, `sendFollowUpEmail()`.
+4. **Actual email sending** — `email-template.js`, `sendFollowUpEmail()`.
    Right now it only composes the email and logs it to the console; no
    backend endpoint exists yet. (Unrelated to the ClickUp integration
    and the privacy notice above, both of which are real and complete.)
@@ -175,9 +172,10 @@ preview the app during development).
   this translation was, treat as provisional."
 - The Chinese multi-select hint (您可以选择多个答案。), drafted directly
   rather than reviewed the same way the rest of the Chinese content was.
-- The Chinese company-name and consent validation messages
+- The three Chinese client-side validation messages
   (`zh.submitNeedsCompany`: 请输入你的公司名称。;
-  `zh.submitNeedsConsent`: 请先勾选同意，再继续。), likewise drafted
+  `zh.submitNeedsConsent`: 请先勾选同意，再继续。;
+  `zh.submitInvalidEmail`: 请输入有效的邮箱地址。), likewise drafted
   directly rather than reviewed. The given English gloss for the consent
   one ("Please agree to continue.") was a paraphrase, not the site's
   actual stored English text ("Please tick the consent box before

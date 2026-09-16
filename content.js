@@ -15,14 +15,11 @@
  * per spec: Katarina Peters' name, the business name, and the numeric
  * slide-position indicator (all handled as language-independent values
  * below), plus the email placeholder "you@company.com" (kept in Latin as
- * a universal example). One narrow client-side validation message (the
- * invalid-email error) was never included in any provided translation --
- * it remains a clearly marked placeholder rather than an invented
- * translation; search for "ZH PLACEHOLDER" to find it. A few other
- * strings (the company-name/consent validation messages, the multi-select
- * hint, the spam-folder aside) are drafted directly rather than reviewed
- * the same way the rest of the Chinese content was -- flagged as such
- * where they're defined.
+ * a universal example). No zh string is a placeholder anymore, but
+ * several are drafted directly rather than reviewed the same way the
+ * rest of the Chinese content was: the three client-side validation
+ * messages, the multi-select hint, and the spam-folder aside -- flagged
+ * as such where each is defined.
  */
 
 // ---------------------------------------------------------------------------
@@ -98,8 +95,9 @@ const STRINGS = {
     companyPlaceholder: "公司名称",
     consentText: "我同意将我的回答与我的邮箱地址关联，以便我能收到专属的分析结果和后续建议。",
     submitButton: "发送我的专属策略",
-    // ZH PLACEHOLDER: not yet given.
-    submitInvalidEmail: "[ZH PLACEHOLDER — invalid email message]",
+    // Drafted directly rather than reviewed the way the rest of the
+    // Chinese content was.
+    submitInvalidEmail: "请输入有效的邮箱地址。",
     // Drafted directly rather than reviewed the way the rest of the
     // Chinese content was.
     submitNeedsCompany: "请输入你的公司名称。",
