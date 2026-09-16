@@ -136,14 +136,14 @@ preview the app during development).
 
 ## Deliberately left as placeholders
 
-1. **Two UI strings with no supplied Chinese translation** —
-   `content.js`, `zh.submitInvalidEmail`, `zh.submitNeedsConsent`. Neither
-   spec has covered these, so they're left as placeholders rather than
-   guessed. Everything else that was ever a placeholder here — the six
-   section labels, the company-name field's placeholder, the post-submit
-   confirmation text, and now the full privacy notice — has since been
-   filled in with real content, whether from a spec document or given
-   directly in chat.
+1. **One UI string with no supplied Chinese translation** —
+   `content.js`, `zh.submitInvalidEmail` (the invalid-email-format
+   message). No spec has covered this one, so it's left as a placeholder
+   rather than guessed. Everything else that was ever a placeholder here
+   — the six section labels, the company-name field's placeholder, the
+   post-submit confirmation text, the company-name/consent validation
+   messages, and the full privacy notice — has since been filled in with
+   real content, whether from a spec document or given directly in chat.
 2. **Cloudflare Web Analytics beacon token** — `index.html`,
    `YOUR_BEACON_TOKEN`. The real token comes from Katarina's own Cloudflare
    dashboard (Analytics & Logs > Web Analytics) once she registers this
@@ -175,8 +175,16 @@ preview the app during development).
   this translation was, treat as provisional."
 - The Chinese multi-select hint (您可以选择多个答案。), drafted directly
   rather than reviewed the same way the rest of the Chinese content was.
+- The Chinese company-name and consent validation messages
+  (`zh.submitNeedsCompany`: 请输入你的公司名称。;
+  `zh.submitNeedsConsent`: 请先勾选同意，再继续。), likewise drafted
+  directly rather than reviewed. The given English gloss for the consent
+  one ("Please agree to continue.") was a paraphrase, not the site's
+  actual stored English text ("Please tick the consent box before
+  submitting.") — confirmed the mapping was still company-name + consent
+  before using them; the stored English wording itself was left as is.
 
-Both are built in as given/instructed, just not yet given the same review
+All are built in as given/instructed, just not yet given the same review
 pass as the rest of the Chinese copy — worth a second look before this
 goes live.
 
