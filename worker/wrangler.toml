@@ -1,10 +1,10 @@
-name = "chinese-checkup-clickup-submit"
+name = "summer-disk-8a2f"
 main = "clickup-submit-worker.js"
 compatibility_date = "2026-09-13"
 
-# The CLICKUP_API_TOKEN secret is NOT set here (secrets never belong in
+# The BREVO_API_KEY secret is NOT set here (secrets never belong in
 # this file or in git). Set it with:
-#   wrangler secret put CLICKUP_API_TOKEN
+#   wrangler secret put BREVO_API_KEY
 # (run from this worker/ directory, after `wrangler login`). See
 # README.md in this folder for the full checklist, including a
 # no-CLI-needed alternative via the Cloudflare dashboard.
